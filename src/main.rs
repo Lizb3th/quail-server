@@ -7,8 +7,7 @@ use std::sync::{Arc, Mutex};
 use std::fs::File;
 
 mod serve;
-use serve::MainPage;
-
+use serve::main_page::MainPage;
 
 struct Temperature {
     degrees: u64,
@@ -57,47 +56,6 @@ impl DataWriter {
         return DataWriter{ ptr: self.ptr.clone() };
     }
 }
-
-// struct Page {
-//     title: String,
-//     // header: String,
-//     body: String,
-// }
-
-// impl Page {
-//     fn new(title: &str) -> Page {
-//         return Page{ title: title.to_string(),
-//                      // header: String::new(),
-//                      body: String::new() };
-//     }
-
-//     fn print(&self) -> String {
-//         return format!("<html>\n\
-//                         <header>\n\
-//                         <title>{}</title>\n\
-//                         </header>\n\
-//                         <body>\n
-//                         {}\n
-//                         </body>\n\
-//                         </html>\n", self.title, self.body)
-//     }
-// }
-
-
-
-// fn get_headers(stream: TcpStream) -> HashMap<String,String> {
-//     let mut data = [0 as u8; 50]; // using 50 byte buffer
-//     while match stream.read(&mut data) {
-//         Ok(_size) => {
-
-//         },
-//         Err(_) => {
-//             println!("An error occurred, terminating connection with {}", stream.peer_addr().unwrap());
-//             stream.shutdown(Shutdown::Both).unwrap();
-//             false
-//         }
-//     } {}
-// }
 
 struct ConnectionRouter{
     #[allow(dead_code)]
@@ -162,33 +120,6 @@ impl ConnectionHandler{
 
     #[allow(dead_code)]
     fn handle_https(_: TcpStream, _: &dyn HttpConsumer) -> Option<ConnectionHandler> {
-        
-        // let mut recordHeader = [0 as u8; 5];
-
-        // let size = stream.read(&mut recordHeader);
-
-        // let handshake_size = size.ok().and_then(|s|{
-        //     println!("0x16 Handshake Record");
-        //     if s == 5 {
-        //         print!("did not get rocord header");
-        //         return None
-        //     }
-        //     if recordHeader[1] != 3 || recordHeader[1] != 1 {
-        //         println!("protocol version is 3.1");
-        //     }
-
-        //     let mut size_buffer = [0 as u8; 8];
-        //     size_buffer[6] = recordHeader[3];
-        //     size_buffer[7] = recordHeader[4];
-
-        //     Some(usize::from_be_bytes(size_buffer))
-        // });
-        
-        // handshake_size.and_then(|s|{
-        //     println!("handshake_size {}", s);
-
-        //     stream.read(&mut recordHeader).ok()
-        // })
 
         Some(ConnectionHandler{})
     }
@@ -322,27 +253,6 @@ fn main() {
     });
 
     let router = ConnectionRouter::bind("127.0.0.1:3333", writer);
-
-    // let listener = TcpListener::bind("127.0.0.1:3333").unwrap();
-//    let listener = TcpListener::bind("0.0.0.0:3333").unwrap();
-    // accept connections and process them, spawning a new thread for each one
-//    println!("Server listening on port 3333");
-    // for server in listener.incoming() {
-    //     match server {
-    //         Ok(stream) => {
-    //             println!("New connection: {}", stream.peer_addr().unwrap());
-    //             let linkdata = writer.get_reader();
-    //             thread::spawn(move|| { 
-    //                 // connection succeeded
-    //                 handle_client(stream, linkdata)
-    //             });
-    //         }
-    //         Err(e) => {
-    //             println!("Error: {}", e);
-    //             /* connection failed */
-    //         }
-    //     }
-    // }
 
     // close the socket server
     drop(router);
