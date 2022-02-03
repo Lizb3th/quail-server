@@ -1,5 +1,5 @@
 pub mod page;
-pub mod main_page;
+pub mod login_page;
 
 use page::Page;
 

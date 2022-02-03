@@ -7,7 +7,7 @@ use std::sync::{Arc, Mutex};
 use std::fs::File;
 
 mod serve;
-use serve::main_page::MainPage;
+use serve::login_page::LoginPage;
 
 struct Temperature {
     degrees: u64,
@@ -163,7 +163,7 @@ fn get_headers(mut stream: &TcpStream) -> Option<String> {
 
 fn handle_client(mut stream: TcpStream, _: DataReader) {
 
-    let main_page = MainPage::new();
+    let main_page = LoginPage::new();
 
     let page_text = main_page.page.print();
     let data2 = page_text.as_bytes();
@@ -203,41 +203,41 @@ fn handle_client(mut stream: TcpStream, _: DataReader) {
 
     #[allow(unreachable_code)]
     {
-    let mut data = [0 as u8; 50]; // using 50 byte buffer
-    while match stream.read(&mut data) {
-        Ok(_size) => {
+        let mut data = [0 as u8; 50]; // using 50 byte buffer
+        while match stream.read(&mut data) {
+            Ok(_size) => {
 
-            let message = String::from_utf8(data.to_vec());
+                let message = String::from_utf8(data.to_vec());
 
-            if message.unwrap().starts_with("GET /favicon.ico") {
-                stream.write(&header_data[0..header_data.len()]).unwrap();
-                print!("icon!");
-                
-                //stream.shutdown(Shutdown::Both);
-            } else {
+                if message.unwrap().starts_with("GET /favicon.ico") {
+                    stream.write(&header_data[0..header_data.len()]).unwrap();
+                    print!("icon!");
+                    
+                    //stream.shutdown(Shutdown::Both);
+                } else {
 
-                // print!("PATH:{{{}}}\n", get_path(message.as_str()).unwrap());
-                print!("Respond: {}\n", String::from_utf8(data.to_vec()).unwrap());
-                //print!("Respond: {:02x?}\n", data);
-                // echo everything!
-                stream.write(&header_data[0..header_data.len()]).unwrap();
-                stream.write(&data2[0..data2.len()]).unwrap();
-                stream.flush().unwrap();
-                //stream.shutdown(Shutdown::Both);
-                // strem.write([0]);
-                // let mut eof = [5 as u8; 1];
-                // stream.write(&eof);
+                    // print!("PATH:{{{}}}\n", get_path(message.as_str()).unwrap());
+                    print!("Respond: {}\n", String::from_utf8(data.to_vec()).unwrap());
+                    //print!("Respond: {:02x?}\n", data);
+                    // echo everything!
+                    stream.write(&header_data[0..header_data.len()]).unwrap();
+                    stream.write(&data2[0..data2.len()]).unwrap();
+                    stream.flush().unwrap();
+                    //stream.shutdown(Shutdown::Both);
+                    // strem.write([0]);
+                    // let mut eof = [5 as u8; 1];
+                    // stream.write(&eof);
+                }
+                true
+            },
+            Err(_) => {
+                println!("An error occurred, terminating connection with {}", stream.peer_addr().unwrap());
+                stream.shutdown(Shutdown::Both).unwrap();
+                false
             }
-            true
-        },
-        Err(_) => {
-            println!("An error occurred, terminating connection with {}", stream.peer_addr().unwrap());
-            stream.shutdown(Shutdown::Both).unwrap();
-            false
-        }
-    } {}
-    print!("Thread End")
-}
+        } {}
+        print!("Thread End")
+    }
 }
 
 fn main() {
