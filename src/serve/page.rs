@@ -5,13 +5,6 @@ pub struct Page {
 }
 
 impl Page {
-    #[allow(dead_code)]
-    pub fn new(title: &str) -> Page {
-        return Page{ title: title.to_string(),
-                     // header: String::new(),
-                     body: String::new() };
-    }
-
     pub fn print(&self) -> String {
         return format!("<html>\n\
                         <header>\n\

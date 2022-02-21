@@ -7,7 +7,10 @@ use std::sync::{Arc, Mutex};
 use std::fs::File;
 
 mod serve;
+mod resources;
 use serve::login_page::LoginPage;
+
+mod html;
 
 struct Temperature {
     degrees: u64,
@@ -180,10 +183,12 @@ fn handle_client(mut stream: TcpStream, _: DataReader) {
 
     if headers.contains("favicon.ico") {
         print!("icon!");
-        let mut f = File::open("C:\\Users\\Beth\\Documents\\playground\\rusting\\quail_server\\target\\debug\\quol.ico").unwrap();
-        let mut ico_file = Vec::<u8>::new();
-        let _ = f.read_to_end(& mut ico_file).unwrap();
+        //let mut f = File::open("C:\\Users\\Beth\\Documents\\playground\\rusting\\quail_server\\target\\debug\\quol.ico").unwrap();
+        //let mut ico_file = Vec::<u8>::new();
+        //let _ = f.read_to_end(& mut ico_file).unwrap();
     
+        let ico_file= resources::FAVICON_BYTES;
+
         let header_text = format!("HTTP/1.1 200 OK\n\
         Content-Type: image/x-ico
         Content-Length: {}\n\n", ico_file.len());

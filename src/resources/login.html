@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <style>
+    input {
+      width: 90%;
+      padding: 10px;
+      margin: 5px;
+      outline: none;
+    }
+    input::placeholder {
+      color: PLACEHOLDER_COLOUR;
+      opacity: 1;
+    }
+  </style>
+
+  <body>
+    <h2 align=middle>Quail Pi</h2>
+
+    <form align=middle action="/login">
+      <label for="user">Log Name</label><br>
+      <input type="text" id="user" name="user" placeholder="PLACEHOLDER_TEXT"><br>
+      <br>
+      <input type="submit" style="width: 150px" value="Get Link">
+    </form> 
+    <br>
+    <p SHOW_LINK style="text-align:center;">
+        <a href="LINK_ADDRESS">External Page</a>
+    </p>
+  </body>
+</html>

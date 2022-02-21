@@ -1,0 +1,9 @@
+static_address: "https://a925b11adf9301d29ecc2d6ebafc2fc32.asuscomm.com:56365"
+
+external_port: 56365
+local_port: 55389
+login_port: 55342
+
+always_read_pages_off_disc: true
+
+main_page_resource_name: ""
