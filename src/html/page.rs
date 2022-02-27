@@ -1,18 +1,27 @@
 
 use std::net::TcpStream;
-use std::result::Result;
 
-pub struct Page {
-    buffer: String
+use super::page_template::{ PageTemplate, PageTemplateRule };
+
+#[allow(dead_code)]
+pub struct Page<'a, 'b, 'c> {
+    //buffer: String
+    template: & 'a PageTemplate,
+    rules: Vec<PageTemplateRule<'b,'c>>,
 }
 
-impl Page {
+impl<'a,'b, 'c> Page<'a,'b, 'c> {
+
+    pub fn new(template: &'a PageTemplate, rules: Vec<PageTemplateRule<'b,'c>>) -> Page<'a,'b,'c> {
+        Page{ template: template, rules: rules }
+    }
+
     // fn new(data: &[u8]){
     //     Page{resource: data}
     // }
 
-    fn serve(&self, stream: TcpStream) -> std::io::Result<()>{
-        stream.write_all(&self.buffer.as_bytes());
+    pub fn serve(&self, stream: TcpStream) -> std::io::Result<()>{
+        //stream.write_all(&self.buffer.as_bytes());
         return Ok(());
     }
 }

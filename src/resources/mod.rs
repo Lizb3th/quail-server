@@ -1,5 +1,6 @@
 
 use std::net::SocketAddr;
+use std::path::PathBuf;
 
 pub const FAVICON_BYTES: &[u8] = std::include_bytes!("quol.ico");
 
@@ -13,19 +14,19 @@ pub const MAIN_PORT: u16 = 56365;
 pub struct Config {
     pub static_address: String,
     pub cache_page_templates: bool,
-    pub login_page_template_path: String,
-    pub main_page_template_path: String,
+    pub login_page_template_path: PathBuf,
+    pub main_page_template_path: PathBuf,
 }
 
 impl Config {
     
-    /// Get the config file for the current instanceof the server
+    /// Get the config file for the current instance of the server
     pub fn get() -> Result<Config, std::io::Error> {
         Ok(Config { 
             static_address: String::new(),
             cache_page_templates: true,
-            login_page_template_path: String::new(),
-            main_page_template_path: String::new(),
+            login_page_template_path: PathBuf::new(),
+            main_page_template_path: PathBuf::new(),
         })
     }
 }
