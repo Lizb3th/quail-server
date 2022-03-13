@@ -7,20 +7,21 @@ use crate::html::page::Page;
 
 type Rule<'a, 'b> = PageTemplateRule<'a, 'b>;
 
-enum PageKind<'a> {
+#[derive(PartialEq, Debug)]
+pub enum PageKind<'a> {
     Login,
     LinkProvider(&'a str),
     Main,
     Logs,
 }
 
-struct PagePool {
+pub struct PagePool {
     main_template: PageTemplate,
     login_template: PageTemplate,
 }
 
 impl PagePool {
-    fn new(config: Config) -> std::io::Result<PagePool>  {
+    pub fn new(config: Config) -> std::io::Result<PagePool>  {
 
         let main_template = PageTemplate::from_file(config.main_page_template_path.as_path());
         let login_template = PageTemplate::from_file(config.login_page_template_path.as_path());

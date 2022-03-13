@@ -4,6 +4,9 @@ external_port: 56365
 local_port: 55389
 login_port: 55342
 
+max_http_request_size_bytes: 512 
+
 always_read_pages_off_disc: true
 
 main_page_resource_name: ""
+
