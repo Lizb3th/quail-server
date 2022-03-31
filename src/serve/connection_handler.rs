@@ -5,15 +5,16 @@
 use std::net::TcpStream;
 use std::sync::{ Arc, Mutex };
 
-use crate::serve::uid::UserIDPool;
-use crate::html::ResponseHandler;
+use super::super::serve::UserSessionPool;
+//use crate::serve::uid::UserSessionPool;
+// use crate::html::ResponseHandler;
 
-struct ConnectionHandler {
-    user_pool: Arc<Mutex<UserIDPool>>,
+pub struct ConnectionHandler {
+    user_pool: Arc<Mutex<UserSessionPool>>,
 }
 
 impl ConnectionHandler {
-    fn new(stream: TcpStream, id_pool: Arc<Mutex<UserIDPool>>) {
+    pub fn new(stream: TcpStream, id_pool: Arc<Mutex<UserSessionPool>>) {
         
     }
 }
