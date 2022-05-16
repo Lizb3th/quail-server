@@ -1,6 +1,11 @@
 // use std::net::SocketAddr;
 use std::path::PathBuf;
 
+/// Config
+/// 
+/// Runtime immutable configuration variables.
+///
+/// 
 pub struct Config {
     
     pub static_address: String,

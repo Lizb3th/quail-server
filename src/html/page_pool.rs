@@ -8,7 +8,7 @@ use crate::html::page::Page;
 type Rule<'a, 'b> = PageTemplateRule<'a, 'b>;
 
 #[derive(PartialEq, Debug)]
-pub enum PageKind<'a> {
+pub enum PageRequest<'a> {
     Login,
     LinkProvider(&'a str),
     Main,
@@ -36,16 +36,16 @@ impl PagePool {
         })
     }
 
-    fn page<'a, 'b>(&'a self, kind: &'b PageKind) -> Page<'a, 'static, 'b> {
+    fn page<'a, 'b>(&'a self, kind: &'b PageRequest) -> Page {
         match kind {
-            PageKind::LinkProvider(address) => {
-                return self.main_template.apply_rule(vec![
-                    Rule{ switch: "LINK_ADDRESS", replacement: &address },
+            PageRequest::LinkProvider(address) => {
+                return self.main_template.apply_rules([
+                    Rule{ pattern: "LINK_ADDRESS", value: &address },
                 ]);
             }
-            PageKind::Login => todo!(),
-            PageKind::Main => todo!(),
-            PageKind::Logs => todo!(),
+            PageRequest::Login => todo!(),
+            PageRequest::Main => todo!(),
+            PageRequest::Logs => todo!(),
         }
     }
 

@@ -1,35 +1,28 @@
 
-use std::io::{ Read, Result, Cursor };
+use std::io::{ Read, Result, Cursor, BufWriter };
 use std::net::TcpStream;
-use crate::http::{ Response, StatusLine, HeaderFields, StatusCode };
+use crate::http::{ Response, StatusLine, HeaderFields, StatusCode, RequestGet };
 
 use super::page_template::{ PageTemplate, PageTemplateRule };
 
+
+
 #[allow(dead_code)]
-pub struct Page<'a, 'b, 'c> {
+pub struct Page {
     //buffer: String
     //template: & 'a PageTemplate,
     //rules: Vec<PageTemplateRule<'b,'c>>,
 
-    store: std::Box<str>
+    // store: Box<[u8]>
+    store: Box<dyn Read>,
+    //reader: fn(&mut self, buf: &mut [u8]) -> Result<usize>;
 }
 
-struct PageWriter {
-    data: Vec<u8>
-}
 
-// impl Fn<()> for PageWriter {
-//     type Output = [u8];
+impl Page {
 
-//     pub fn call(&self) -> [u8] {
-//         *(self.data)
-//     }
-// }
-
-impl<'a,'b,'c> Page<'a,'b,'c> {
-
-    pub fn new(template: &'a PageTemplate, rules: Vec<PageTemplateRule<'b,'c>>) -> Page<'a,'b,'c> {
-        Page{ template: template, rules: rules }
+    pub fn new<R: 'static>(buffer: R) -> Page where R: Read {
+        Page { store: Box::new(buffer) }
     }
 
     // fn new(data: &[u8]){
@@ -41,12 +34,12 @@ impl<'a,'b,'c> Page<'a,'b,'c> {
         return Ok(());
     }
 
-    pub fn to_request(&self) -> Response<impl Read> {
+    pub fn to_request(self) -> Response<impl Read> {
 
 
-        let body = 
+        let body = self.store;
 
-        return Response{
+        return Response {
             status_line: StatusLine{
                 version: "Http 1.1".to_string(),
                 status_code: StatusCode::Ok,
@@ -55,7 +48,7 @@ impl<'a,'b,'c> Page<'a,'b,'c> {
             header_fields: HeaderFields{
                 headers: Vec::new()
             },
-            body: Cursor::new(vec![0; 15]) //vec::Vec::new(),
+            body: body
         }
     }
 }
