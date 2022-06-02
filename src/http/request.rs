@@ -63,7 +63,7 @@ impl Headers {
 
 }
 
-#[derive(PartialEq, Debug)]
+#[derive(PartialEq)]
 pub enum RequestGet<'a> {
     Html(PageKind<'a>),
     BinaryFile,

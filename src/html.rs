@@ -7,6 +7,7 @@ mod html_tests;
 
 pub mod page_template;
 pub mod page;
+pub mod page_template_rule;
 
 
 pub type PagePool = page_pool::PagePool;

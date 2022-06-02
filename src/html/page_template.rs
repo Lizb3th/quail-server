@@ -1,23 +1,16 @@
 
 use crate::html::page::Page;
+use crate::html::page_template_rule::PageTemplateRule;
 
 use std::path::Path;
 //use page::Page;
 
-pub trait PageTemplateRule {
+/// PageTemplate
+/// A template for an HTML Page.
+/// stores a buffer and can be combined with a rule to create an HTML Page.
 
-    fn pattern(&self) -> &str;
-    fn value(&self) -> &str;
-}
 
-#[allow(dead_code)]
-pub struct PageTemplate {
-    buffer: String,
-    // internal: Box<Data>
-}
-
-/// 
-/// 
+/// Example
 /// ``` HTML
 /// <html>
 /// <header><title>[[title]]</title></header>
@@ -27,6 +20,12 @@ pub struct PageTemplate {
 /// </html>
 /// ```
 
+
+#[allow(dead_code)]
+pub struct PageTemplate {
+    pub(crate) buffer: String,
+    // internal: Box<Data>
+}
 
 impl PageTemplate {
 
@@ -46,19 +45,21 @@ impl PageTemplate {
     }
 
     #[allow(dead_code)]
-    pub fn apply_rules<'b,'c>(&self, rules: dyn &[PageTemplateRule]) -> Page {
-        let bytes = rules.iter().fold( self.buffer.clone(),
-            |acc, rule|
-                acc.replace(rule.pattern, rule.value) ).as_bytes();
+    pub fn apply_rules<'a,'b>(&self, rules: &[PageTemplateRule<'a,'b>]) -> Page {
+        let page_buffer = rules.iter().fold( self.buffer.clone(),
+            |acc, rule| {
+                let pattern = format!("[[{}]]", rule.pattern);
+                acc.replace(&pattern, rule.value)
+            });
 
-        Page::new( bytes )
+        Page::new( page_buffer )
     }
 
-    pub fn apply_rules<'b,'c>(&self, rules: [dyn PageTemplateRule]) -> Page {
-        let bytes = rules.iter().fold( self.buffer.clone(),
-            |acc, rule|
-                acc.replace(rule.pattern, rule.value) ).as_bytes();
+    // pub fn apply_rules<'b,'c>(&self, rules: [PageTemplateRule<'c>]) -> Page {
+    //     let bytes = rules.iter().fold( self.buffer.clone(),
+    //         |acc, rule|
+    //             acc.replace(rule.pattern, rule.value) ).as_bytes();
 
-        Page::new( bytes )
-    }
+    //     Page::new( bytes )
+    // }
 }

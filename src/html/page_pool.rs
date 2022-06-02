@@ -1,19 +1,24 @@
 
 use crate::resources::Config;
-use crate::html::page_template::{ PageTemplate,
-                                  PageTemplateRule };
+use crate::html::page_template::PageTemplate;
+use crate::html::page_template_rule::PageTemplateRule;
 
 use crate::html::page::Page;
 
-type Rule<'a, 'b> = PageTemplateRule<'a, 'b>;
+use super::page_template_rule::PageTemplateRuleProvider;
 
-#[derive(PartialEq, Debug)]
+#[derive(PartialEq)]
 pub enum PageRequest<'a> {
     Login,
     LinkProvider(&'a str),
     Main,
     Logs,
 }
+
+// impl<'a> PageTemplateRuleProvider<'static, 'a> for PageRequest<'a> {
+    
+// }
+
 
 pub struct PagePool {
     main_template: PageTemplate,
@@ -39,8 +44,8 @@ impl PagePool {
     fn page<'a, 'b>(&'a self, kind: &'b PageRequest) -> Page {
         match kind {
             PageRequest::LinkProvider(address) => {
-                return self.main_template.apply_rules([
-                    Rule{ pattern: "LINK_ADDRESS", value: &address },
+                return self.main_template.apply_rules(&[
+                    PageTemplateRule{ pattern: "LINK_ADDRESS", value: &address },
                 ]);
             }
             PageRequest::Login => todo!(),
@@ -48,6 +53,4 @@ impl PagePool {
             PageRequest::Logs => todo!(),
         }
     }
-
-
 }

@@ -42,11 +42,11 @@ mod http_tests {
     use super::super::RequestGet;
     use super::BodyBuffer;
 
-    #[test]
-    fn some_test() {
-        let sut = RequestGet::TextFile;
-        assert_eq!(RequestGet::TextFile, sut);
-    }
+    // #[test]
+    // fn some_test() {
+    //     let sut = RequestGet::TextFile;
+    //     assert_eq!(RequestGet::TextFile, sut);
+    // }
 
     #[test]
     fn parse_header() {
