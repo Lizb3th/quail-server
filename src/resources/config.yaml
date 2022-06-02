@@ -1,4 +1,4 @@
-static_address: "https://a925b11adf9301d29ecc2d6ebafc2fc32.asuscomm.com:56365"
+static_address: "localhost"
 
 external_port: 56365
 local_port: 55389
